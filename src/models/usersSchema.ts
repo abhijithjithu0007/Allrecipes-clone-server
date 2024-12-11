@@ -3,7 +3,6 @@ import mongoose, { Document, Schema } from "mongoose";
 interface UserType extends Document {
   username: string;
   email: string;
-  password: string;
   firstName?: string;
   lastName?: string;
   profileImage?: string;
@@ -11,7 +10,7 @@ interface UserType extends Document {
   updatedAt: Date;
 }
 
-const userSchema: Schema<UserType> = new Schema(
+const usersSchema: Schema<UserType> = new Schema(
   {
     username: {
       type: String,
@@ -22,10 +21,6 @@ const userSchema: Schema<UserType> = new Schema(
       type: String,
       required: true,
       unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
     },
     firstName: {
       type: String,
@@ -40,5 +35,5 @@ const userSchema: Schema<UserType> = new Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model<UserType>("User", userSchema);
+const User = mongoose.model<UserType>("User", usersSchema);
 export default User;
