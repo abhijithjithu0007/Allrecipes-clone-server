@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors";
+// import cors from "cors";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import authRoute from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -15,9 +16,11 @@ app.use(express.json());
 app.get("/", (_req, res) => {
   res.send("Hello World!");
 });
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+// app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 app.use(globalErrorHandler);
+
+app.use("/api/auth", authRoute);
 
 mongoose
   .connect(process.env.MONGO_URI || "")

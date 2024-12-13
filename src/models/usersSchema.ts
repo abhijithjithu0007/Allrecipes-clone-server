@@ -1,10 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface UserType extends Document {
-  username: string;
+  name: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
   profileImage?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -12,7 +10,7 @@ interface UserType extends Document {
 
 const usersSchema: Schema<UserType> = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       unique: true,
@@ -21,12 +19,6 @@ const usersSchema: Schema<UserType> = new Schema(
       type: String,
       required: true,
       unique: true,
-    },
-    firstName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
     },
     profileImage: {
       type: String,
