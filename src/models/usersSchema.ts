@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface UserType extends Document {
-  name: string;
+  name?: string;
   email: string;
   profileImage?: string;
   createdAt: Date;
@@ -12,7 +12,6 @@ const usersSchema: Schema<UserType> = new Schema(
   {
     name: {
       type: String,
-      required: true,
       unique: true,
     },
     email: {
