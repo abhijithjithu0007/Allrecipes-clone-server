@@ -7,9 +7,9 @@ import { generateOtp } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, profileImage = "" } = req.body;
+  const { name = "", email, profileImage = "" } = req.body;
 
-  if (!name || !email) {
+  if (!email) {
     throw new CustomError("All fields are required", 400);
   }
   const existingUser = await User.findOne({ email });
