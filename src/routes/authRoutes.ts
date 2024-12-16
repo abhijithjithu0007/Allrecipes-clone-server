@@ -2,7 +2,11 @@ import express from "express";
 import { errorCatch } from "../utils/errors/errorCatch";
 import { validateData } from "../middlewares/zodValidation";
 import { registerSchema, otpSchema, loginSchema } from "../utils/zodSchema";
-import { sendOtp, verifyOtp } from "../controllers/emailAuthController";
+import {
+  sendOtp,
+  sendOtpForLogin,
+  verifyOtp,
+} from "../controllers/emailAuthController";
 import {
   googleLogin,
   googleRegister,
@@ -19,6 +23,8 @@ router.post(
 
 //Send OTP
 router.post("/sendOtp", errorCatch(sendOtp));
+//send otp for login
+router.post("/send-login-otp", errorCatch(sendOtpForLogin));
 
 //Verify OTP
 router.post("/verifyOtp", validateData(otpSchema), errorCatch(verifyOtp));
