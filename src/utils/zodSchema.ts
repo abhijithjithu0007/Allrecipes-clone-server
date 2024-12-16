@@ -8,7 +8,7 @@ const registerSchema = z.object({
 
 const loginSchema = z.object({
   email: z.string(),
-  password: z.string(),
+  namr: z.string().optional(),
 });
 
 const otpSchema = z.object({

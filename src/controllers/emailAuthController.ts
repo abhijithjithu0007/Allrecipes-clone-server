@@ -7,27 +7,6 @@ import { generateOtp } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
 import jwt from "jsonwebtoken";
 
-export const googleRegister = async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-
-  console.log(name, email);
-
-  if (!email) {
-    throw new CustomError("All fields are required", 400);
-  }
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw new CustomError("User already exists", 400);
-  }
-  const newUser = new User({ name, email });
-  await newUser.save();
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY || "");
-
-  res
-    .status(200)
-    .json(new StandardResponse("User registered successfully", token));
-};
-
 ////////////////////////////////////////////
 
 export const sendOtp = async (req: Request, res: Response) => {
