@@ -6,6 +6,7 @@ import {
   sendOtp,
   sendOtpForLogin,
   verifyOtp,
+  verifyOtpForLogin,
 } from "../controllers/emailAuthController";
 import {
   googleLogin,
@@ -28,6 +29,12 @@ router.post("/send-login-otp", errorCatch(sendOtpForLogin));
 
 //Verify OTP
 router.post("/verifyOtp", validateData(otpSchema), errorCatch(verifyOtp));
+//verify otp for login
+router.post(
+  "/verify-login-otp",
+  validateData(otpSchema),
+  errorCatch(verifyOtpForLogin)
+);
 
 //login
 router.post("/login", validateData(loginSchema), errorCatch(googleLogin));

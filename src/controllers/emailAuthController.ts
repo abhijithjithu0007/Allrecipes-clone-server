@@ -121,3 +121,41 @@ export const sendOtpForLogin = async (req: Request, res: Response) => {
 
   res.status(200).json(new StandardResponse("OTP sent successfully"));
 };
+
+export const verifyOtpForLogin = async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    throw new CustomError("Email and OTP are required", 400);
+  }
+
+  const otpEntry = await Otp.findOne({ email });
+
+  if (!otpEntry) {
+    throw new CustomError("User not found", 400);
+  }
+
+  if (otpEntry.otp !== otp) {
+    throw new CustomError("Invalid OTP", 400);
+  }
+
+  const currentTime = new Date().getTime();
+  const otpUpdatedTime = new Date(otpEntry.expiresAt).getTime();
+  const timeDifference = (currentTime - otpUpdatedTime) / 1000 / 60;
+
+  if (timeDifference > 5) {
+    throw new CustomError("OTP expired", 400);
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new CustomError("User not found", 404);
+  } else {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY || "", {
+      expiresIn: "1d",
+    });
+    res
+      .status(200)
+      .json(new StandardResponse("Email verified successfully", token));
+  }
+};
