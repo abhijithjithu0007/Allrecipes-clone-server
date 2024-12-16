@@ -5,9 +5,12 @@ import User from "../models/usersSchema";
 import Otp from "../models/otpSchema";
 import { generateOtp } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
+import jwt from "jsonwebtoken";
 
-export const register = async (req: Request, res: Response) => {
-  const { name = "", email, profileImage = "" } = req.body;
+export const googleRegister = async (req: Request, res: Response) => {
+  const { name, email } = req.body;
+
+  console.log(name, email);
 
   if (!email) {
     throw new CustomError("All fields are required", 400);
@@ -16,10 +19,13 @@ export const register = async (req: Request, res: Response) => {
   if (existingUser) {
     throw new CustomError("User already exists", 400);
   }
-  const newUser = new User({ name, email, profileImage });
+  const newUser = new User({ name, email });
   await newUser.save();
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY || "");
 
-  res.status(200).json(new StandardResponse("User registered successfully"));
+  res
+    .status(200)
+    .json(new StandardResponse("User registered successfully", token));
 };
 
 ////////////////////////////////////////////
@@ -88,6 +94,15 @@ export const verifyOtp = async (req: Request, res: Response) => {
   } else {
     const newUser = new User({ email });
     await newUser.save();
-    res.status(200).json(new StandardResponse("Email verified successfully"));
+    const token = jwt.sign(
+      { id: newUser._id },
+      process.env.JWT_SECRET_KEY || "",
+      {
+        expiresIn: "1d",
+      }
+    );
+    res
+      .status(200)
+      .json(new StandardResponse("Email verified successfully", token));
   }
 };
