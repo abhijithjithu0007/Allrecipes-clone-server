@@ -18,9 +18,8 @@ app.get("/", (_req, res) => {
 });
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
-app.use(globalErrorHandler);
-
 app.use("/api/auth", authRoute);
+app.use(globalErrorHandler);
 
 mongoose
   .connect(process.env.MONGO_URI || "")

@@ -15,13 +15,6 @@ import {
 
 const router = express.Router();
 
-//Register user
-router.post(
-  "/register",
-  validateData(registerSchema),
-  errorCatch(googleRegister)
-);
-
 //Send OTP
 router.post("/sendOtp", errorCatch(sendOtp));
 //send otp for login
@@ -36,7 +29,14 @@ router.post(
   errorCatch(verifyOtpForLogin)
 );
 
-//login
-router.post("/login", validateData(loginSchema), errorCatch(googleLogin));
+//Register user
+router.post(
+  "/register",
+  validateData(registerSchema),
+  errorCatch(googleRegister)
+);
+
+//google-login
+router.post("/g-login", validateData(loginSchema), errorCatch(googleLogin));
 
 export default router;

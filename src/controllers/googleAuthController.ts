@@ -26,7 +26,12 @@ export const googleRegister = async (req: Request, res: Response) => {
 
   res
     .status(200)
-    .json(new StandardResponse("User registered successfully", token));
+    .json(
+      new StandardResponse("User registered successfully", {
+        data: token,
+        email: email,
+      })
+    );
 };
 
 export const googleLogin = async (req: Request, res: Response) => {

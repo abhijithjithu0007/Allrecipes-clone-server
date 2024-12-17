@@ -7,8 +7,6 @@ import { generateOtp } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
 import jwt from "jsonwebtoken";
 
-////////////////////////////////////////////
-
 export const sendOtp = async (req: Request, res: Response) => {
   const { email } = req.body;
 
@@ -18,6 +16,23 @@ export const sendOtp = async (req: Request, res: Response) => {
 
   if (existingUser) {
     throw new CustomError("User already exists", 400);
+  }
+
+  const existingOtpEntry = await Otp.findOne({ email });
+
+  if (existingOtpEntry) {
+    existingOtpEntry.otp = generateOtp();
+    existingOtpEntry.expiresAt = new Date(Date.now() + 300000);
+    await existingOtpEntry.save();
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your OTP Code",
+      text: `Your OTP is ${existingOtpEntry.otp}. It will expire in 5 minutes.`,
+    });
+
+    res.status(200).json(new StandardResponse("OTP sent successfully"));
   } else {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + 300000);
