@@ -93,9 +93,12 @@ export const verifyOtp = async (req: Request, res: Response) => {
         expiresIn: "1d",
       }
     );
-    res
-      .status(200)
-      .json(new StandardResponse("Email verified successfully", token));
+    res.status(200).json(
+      new StandardResponse("Email verified successfully", {
+        token: token,
+        email: email,
+      })
+    );
   }
 };
 
@@ -171,6 +174,11 @@ export const verifyOtpForLogin = async (req: Request, res: Response) => {
     });
     res
       .status(200)
-      .json(new StandardResponse("Email verified successfully", token));
+      .json(
+        new StandardResponse("Email verified successfully", {
+          token: token,
+          email: email,
+        })
+      );
   }
 };

@@ -24,14 +24,12 @@ export const googleRegister = async (req: Request, res: Response) => {
     }
   );
 
-  res
-    .status(200)
-    .json(
-      new StandardResponse("User registered successfully", {
-        data: token,
-        email: email,
-      })
-    );
+  res.status(200).json(
+    new StandardResponse("User registered successfully", {
+      data: token,
+      email: email,
+    })
+  );
 };
 
 export const googleLogin = async (req: Request, res: Response) => {
@@ -42,7 +40,7 @@ export const googleLogin = async (req: Request, res: Response) => {
   } else {
     const user = await User.findOne({ email });
     if (!user) {
-      throw new CustomError("User not found", 404);
+      throw new CustomError("User not found! Please register", 404);
     } else {
       const token = jwt.sign(
         { id: user._id },
@@ -51,9 +49,12 @@ export const googleLogin = async (req: Request, res: Response) => {
           expiresIn: "1d",
         }
       );
-      res
-        .status(200)
-        .json(new StandardResponse("User logged in successfully", token));
+      res.status(200).json(
+        new StandardResponse("User logged in successfully", {
+          token: token,
+          email: email,
+        })
+      );
     }
   }
 };
