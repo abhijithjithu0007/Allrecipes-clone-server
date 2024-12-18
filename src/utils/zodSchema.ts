@@ -15,5 +15,17 @@ const otpSchema = z.object({
   email: z.string().email(),
   otp: z.string(),
 });
+const addRecipeSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  mealType: z.string(),
+  cuisine: z.string(),
+  ingredients: z.array(z.string()),
+  directions: z.array(z.string()),
+  image: z.string().optional(),
+  prepTime: z.number(),
+  servings: z.number(),
+  notes: z.string().optional(),
+});
 
-export { loginSchema, registerSchema, otpSchema };
+export { loginSchema, registerSchema, otpSchema, addRecipeSchema };
