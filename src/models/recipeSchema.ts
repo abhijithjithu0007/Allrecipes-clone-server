@@ -7,8 +7,8 @@ interface RecipeDocument extends Document {
   ingredients: string[];
   directions: string[];
   image?: string;
-  prepTime: number;
-  servings: number;
+  prepTime: string;
+  servings: string;
   mealType: string;
   cuisine: string;
   notes?: string;
@@ -26,8 +26,11 @@ const recipeSchema: Schema<RecipeDocument> = new Schema(
     image: { type: String },
     mealType: { type: String, required: true },
     cuisine: { type: String, required: true },
-    prepTime: { type: Number, required: true },
-    servings: { type: Number, required: true },
+    prepTime: {
+      value: { type: String, required: true },
+      unit: { type: String, required: true },
+    },
+    servings: { type: String, required: true },
     notes: { type: String },
     nutrition: { type: String },
     reviews: [

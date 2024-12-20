@@ -23,8 +23,11 @@ const addRecipeSchema = z.object({
   ingredients: z.array(z.string()),
   directions: z.array(z.string()),
   image: z.string().optional(),
-  prepTime: z.number(),
-  servings: z.number(),
+  prepTime: z.object({
+    value: z.string(),
+    unit: z.string(),
+  }),
+  servings: z.string(),
   notes: z.string().optional(),
 });
 
