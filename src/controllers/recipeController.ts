@@ -52,6 +52,7 @@ export const addRecipe = async (req: CustomRequest, res: Response) => {
 
 export const getRecipeByMeals = async (req: CustomRequest, res: Response) => {
   const { mealType } = req.params;
+
   const recipes = await Recipe.find({ mealType });
   res
     .status(200)
@@ -63,9 +64,22 @@ export const getRecipeByIngredients = async (
   res: Response
 ) => {
   const { ingredient } = req.params;
+
   const recipes = await Recipe.find({
-    ingredients: { $in: ingredient },
+    ingredients: {
+      $elemMatch: {
+        $regex: ingredient,
+        $options: "i",
+      },
+    },
   });
+
+  if (!recipes.length) {
+    res
+      .status(404)
+      .json({ message: "No recipes found with the given ingredient" });
+  }
+
   res
     .status(200)
     .json(new StandardResponse("Recipes fetched successfully", recipes));

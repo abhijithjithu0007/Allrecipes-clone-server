@@ -27,6 +27,7 @@ router.get(
 
 router.get(
   "/get-recipe-by-ingredient/:ingredient",
+  verifyToken,
   errorCatch(getRecipeByIngredients)
 );
 router.get(
