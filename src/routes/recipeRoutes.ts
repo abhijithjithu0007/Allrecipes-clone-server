@@ -6,6 +6,7 @@ import { verifyToken } from "../middlewares/verifyToken";
 import { errorCatch } from "../utils/errors/errorCatch";
 import {
   addRecipe,
+  getAllRecipes,
   getRecipeByCuisine,
   getRecipeByIngredients,
   getRecipeByMeals,
@@ -19,21 +20,13 @@ router.post(
   validateData(addRecipeSchema),
   errorCatch(addRecipe)
 );
-router.get(
-  "/get-recipe-by-meals/:mealType",
-  verifyToken,
-  errorCatch(getRecipeByMeals)
-);
+router.get("/get-all-recipes", errorCatch(getAllRecipes));
+router.get("/get-recipe-by-meals/:mealType", errorCatch(getRecipeByMeals));
 
 router.get(
   "/get-recipe-by-ingredient/:ingredient",
-  verifyToken,
   errorCatch(getRecipeByIngredients)
 );
-router.get(
-  "/get-recipe-by-cuisine/:cuisine",
-  verifyToken,
-  errorCatch(getRecipeByCuisine)
-);
+router.get("/get-recipe-by-cuisine/:cuisine", errorCatch(getRecipeByCuisine));
 
 export default router;

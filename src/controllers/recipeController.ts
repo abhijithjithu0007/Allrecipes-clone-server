@@ -92,3 +92,24 @@ export const getRecipeByCuisine = async (req: CustomRequest, res: Response) => {
     .status(200)
     .json(new StandardResponse("Recipes fetched successfully", recipes));
 };
+
+export const getAllRecipes = async (req: CustomRequest, res: Response) => {
+  const recipes = await Recipe.find();
+  res
+    .status(200)
+    .json(new StandardResponse("Recipes fetched successfully", recipes));
+};
+
+export const searchRecipe = async (req: CustomRequest, res: Response) => {
+  const { query } = req.params;
+  const recipes = await Recipe.find({
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { cuisine: { $regex: query, $options: "i" } },
+      { mealType: { $regex: query, $options: "i" } },
+    ],
+  });
+  res
+    .status(200)
+    .json(new StandardResponse("Recipes fetched successfully", recipes));
+};
