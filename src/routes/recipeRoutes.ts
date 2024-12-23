@@ -10,6 +10,7 @@ import {
   getRecipeByCuisine,
   getRecipeByIngredients,
   getRecipeByMeals,
+  searchRecipe,
 } from "../controllers/recipeController";
 
 const router = express.Router();
@@ -28,5 +29,7 @@ router.get(
   errorCatch(getRecipeByIngredients)
 );
 router.get("/get-recipe-by-cuisine/:cuisine", errorCatch(getRecipeByCuisine));
+
+router.get("/search-recipe/:query", errorCatch(searchRecipe));
 
 export default router;

@@ -108,7 +108,9 @@ export const searchRecipe = async (req: CustomRequest, res: Response) => {
       { cuisine: { $regex: query, $options: "i" } },
       { mealType: { $regex: query, $options: "i" } },
     ],
-  });
+  })
+    .limit(10)
+    .select("title cuisine mealType");
   res
     .status(200)
     .json(new StandardResponse("Recipes fetched successfully", recipes));
