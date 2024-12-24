@@ -8,6 +8,7 @@ import {
   addRecipe,
   getAllRecipes,
   getRecipeByCuisine,
+  getRecipeById,
   getRecipeByIngredients,
   getRecipeByMeals,
   searchRecipe,
@@ -22,6 +23,7 @@ router.post(
   errorCatch(addRecipe)
 );
 router.get("/get-all-recipes", errorCatch(getAllRecipes));
+router.get("/get-recipe-by-id/:id", errorCatch(getRecipeById));
 router.get("/get-recipe-by-meals/:mealType", errorCatch(getRecipeByMeals));
 
 router.get(

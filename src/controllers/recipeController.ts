@@ -100,6 +100,14 @@ export const getAllRecipes = async (req: CustomRequest, res: Response) => {
     .json(new StandardResponse("Recipes fetched successfully", recipes));
 };
 
+export const getRecipeById = async (req: CustomRequest, res: Response) => {
+  const { id } = req.params;
+  const recipe = await Recipe.findById(id);
+  res
+    .status(200)
+    .json(new StandardResponse("Recipe fetched successfully", recipe));
+};
+
 export const searchRecipe = async (req: CustomRequest, res: Response) => {
   const { query } = req.params;
   const recipes = await Recipe.find({
@@ -110,7 +118,7 @@ export const searchRecipe = async (req: CustomRequest, res: Response) => {
     ],
   })
     .limit(10)
-    .select("title cuisine mealType");
+    .select("title cuisine mealType _id");
   res
     .status(200)
     .json(new StandardResponse("Recipes fetched successfully", recipes));
