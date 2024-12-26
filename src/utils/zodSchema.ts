@@ -31,4 +31,16 @@ const addRecipeSchema = z.object({
   notes: z.string().optional(),
 });
 
-export { loginSchema, registerSchema, otpSchema, addRecipeSchema };
+const addReviewSchema = z.object({
+  recipeId: z.string(),
+  notes: z.string().optional(),
+  rating: z.number(),
+});
+
+export {
+  loginSchema,
+  registerSchema,
+  otpSchema,
+  addRecipeSchema,
+  addReviewSchema,
+};

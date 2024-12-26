@@ -3,7 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 interface ReviewType extends Document {
   recipe: mongoose.Schema.Types.ObjectId;
   user: mongoose.Schema.Types.ObjectId;
-  comment?: string;
+  notes?: string;
   rating: number;
   createdAt: Date;
 }
@@ -20,7 +20,7 @@ const reviewSchema: Schema<ReviewType> = new Schema(
       ref: "User",
       required: true,
     },
-    comment: {
+    notes: {
       type: String,
     },
     rating: {

@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { string } from "yup";
 
 interface RecipeDocument extends Document {
   title: string;
@@ -13,7 +12,6 @@ interface RecipeDocument extends Document {
   cuisine: string;
   notes?: string;
   nutrition?: string;
-  reviews: mongoose.Schema.Types.ObjectId[];
   createdBy: mongoose.Schema.Types.ObjectId;
 }
 
@@ -33,12 +31,7 @@ const recipeSchema: Schema<RecipeDocument> = new Schema(
     servings: { type: String, required: true },
     notes: { type: String },
     nutrition: { type: String },
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
