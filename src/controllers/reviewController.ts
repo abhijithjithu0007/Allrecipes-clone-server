@@ -17,16 +17,16 @@ export const addReview = async (req: CustomRequest, res: Response) => {
     throw new CustomError("Recipe not found", 404);
   }
 
-  const reviewData = {
+  const review = new Review({
     recipe: recipeId,
     user: req.user?.id,
     rating,
     notes,
-  };
-  const review = new Review(reviewData);
+  });
+
   await review.save();
 
   res
     .status(200)
-    .json(new StandardResponse("Review added successfully", reviewData));
+    .json(new StandardResponse("Review added successfully", review));
 };

@@ -172,13 +172,11 @@ export const verifyOtpForLogin = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY || "", {
       expiresIn: "1d",
     });
-    res
-      .status(200)
-      .json(
-        new StandardResponse("Email verified successfully", {
-          token: token,
-          email: email,
-        })
-      );
+    res.status(200).json(
+      new StandardResponse("Email verified successfully", {
+        token: token,
+        email: email,
+      })
+    );
   }
 };

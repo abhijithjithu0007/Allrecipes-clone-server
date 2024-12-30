@@ -5,18 +5,20 @@ interface ReviewType extends Document {
   user: mongoose.Schema.Types.ObjectId;
   notes?: string;
   rating: number;
+  helpful: number;
   createdAt: Date;
 }
 
 const reviewSchema: Schema<ReviewType> = new Schema(
   {
     recipe: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Recipe",
       required: true,
     },
+
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -27,11 +29,16 @@ const reviewSchema: Schema<ReviewType> = new Schema(
       type: Number,
       required: true,
     },
+    helpful: {
+      type: Number,
+      default: 0,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
     },
   },
+
   { timestamps: true }
 );
 
