@@ -95,6 +95,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
     );
     res.status(200).json(
       new StandardResponse("Email verified successfully", {
+        id: newUser._id,
         token: token,
         email: email,
       })
@@ -174,6 +175,7 @@ export const verifyOtpForLogin = async (req: Request, res: Response) => {
     });
     res.status(200).json(
       new StandardResponse("Email verified successfully", {
+        id: user._id,
         token: token,
         email: email,
       })
