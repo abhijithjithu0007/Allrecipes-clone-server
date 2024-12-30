@@ -51,3 +51,12 @@ export const getReviewByRecipe = async (req: CustomRequest, res: Response) => {
     .status(200)
     .json(new StandardResponse("Reviews fetched successfully", reviews));
 };
+
+export const getReviewByUser = async (req: CustomRequest, res: Response) => {
+  const { userId } = req.params;
+  const reviews = await Review.find({ user: userId });
+
+  res
+    .status(200)
+    .json(new StandardResponse("Reviews fetched successfully", reviews));
+};
