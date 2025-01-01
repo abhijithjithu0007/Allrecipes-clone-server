@@ -52,9 +52,40 @@ export const getReviewByRecipe = async (req: CustomRequest, res: Response) => {
     .json(new StandardResponse("Reviews fetched successfully", reviews));
 };
 
-export const getReviewByUser = async (req: CustomRequest, res: Response) => {
-  const { userId } = req.params;
-  const reviews = await Review.find({ user: userId });
+export const filterReviewByRating = async (
+  req: CustomRequest,
+  res: Response
+) => {
+  const { recipeId } = req.query;
+  let ratings = req.query.ratings;
+
+  if (!recipeId || !ratings) {
+    throw new CustomError("All fields are required", 400);
+  }
+
+  if (typeof ratings === "string") {
+    ratings = [ratings];
+  } else if (!Array.isArray(ratings)) {
+    throw new CustomError("Ratings must be an array or a string", 400);
+  }
+
+  const numericRatings = ratings.map((rating) => Number(rating));
+
+  console.log(numericRatings);
+
+  const reviews = await Review.aggregate([
+    { $match: { recipe: new mongoose.Types.ObjectId(recipeId as string) } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    { $unwind: "$user" },
+    { $match: { rating: { $in: numericRatings } } },
+  ]);
 
   res
     .status(200)

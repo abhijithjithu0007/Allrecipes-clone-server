@@ -12,7 +12,7 @@ export const verifyToken = async (
   try {
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
-      throw new CustomError("You are not authenticated", 401);
+      throw new CustomError("You are not authenticated ! Please login", 401);
     }
     const verified = jwt.verify(token, process.env.JWT_SECRET_KEY || "");
     req.user = verified as JwtDecoded;

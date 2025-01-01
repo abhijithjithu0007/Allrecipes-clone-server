@@ -6,8 +6,8 @@ import { errorCatch } from "../utils/errors/errorCatch";
 import { addReviewSchema } from "../utils/zodSchema";
 import {
   addReview,
+  filterReviewByRating,
   getReviewByRecipe,
-  getReviewByUser,
 } from "../controllers/reviewController";
 
 const router = express.Router();
@@ -26,8 +26,9 @@ router.get(
 );
 
 router.get(
-  "/get-review-by-user/:userId",
+  "/filter-review-by-rating",
   verifyToken,
-  errorCatch(getReviewByUser)
+  errorCatch(filterReviewByRating)
 );
+
 export default router;
