@@ -3,6 +3,7 @@ import { StandardResponse } from "../utils/standardResponse";
 import { CustomError } from "../utils/errors/customError";
 import Recipe from "../models/recipeSchema";
 import { CustomRequest } from "../types/interface";
+import User from "../models/usersSchema";
 
 export const addRecipe = async (req: CustomRequest, res: Response) => {
   const {
@@ -122,4 +123,51 @@ export const searchRecipe = async (req: CustomRequest, res: Response) => {
   res
     .status(200)
     .json(new StandardResponse("Recipes fetched successfully", recipes));
+};
+
+export const saveRecipe = async (req: CustomRequest, res: Response) => {
+  const { recipeId } = req.params;
+  const recipe = await Recipe.findById(recipeId);
+  if (!recipe) {
+    throw new CustomError("Recipe not found", 404);
+  }
+
+  const user = await User.aggregate([
+    { $match: { _id: req.user?.id } },
+    {
+      $project: {
+        savedRecipes: { $in: [recipeId, "$savedRecipes"] },
+      },
+    },
+  ]);
+
+  if (!user.length) {
+    throw new CustomError("User not found", 404);
+  }
+
+  if (user[0]?.savedRecipes) {
+    throw new CustomError("Recipe already saved", 400);
+  }
+  await User.updateOne(
+    { _id: req.user?.id },
+    { $push: { savedRecipes: recipeId } }
+  );
+
+  res.status(200).json(new StandardResponse("Recipe saved successfully"));
+};
+
+export const getSavedRecipes = async (req: CustomRequest, res: Response) => {
+  const userSaved = await User.findById(req.user?.id).populate("savedRecipes");
+  if (!userSaved) {
+    throw new CustomError("User not found", 404);
+  }
+
+  res
+    .status(200)
+    .json(
+      new StandardResponse(
+        "Saved recipes fetched successfully",
+        userSaved.savedRecipes
+      )
+    );
 };

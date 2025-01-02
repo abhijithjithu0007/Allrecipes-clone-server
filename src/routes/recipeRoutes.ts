@@ -11,6 +11,8 @@ import {
   getRecipeById,
   getRecipeByIngredients,
   getRecipeByMeals,
+  getSavedRecipes,
+  saveRecipe,
   searchRecipe,
 } from "../controllers/recipeController";
 
@@ -33,5 +35,9 @@ router.get(
 router.get("/get-recipe-by-cuisine/:cuisine", errorCatch(getRecipeByCuisine));
 
 router.get("/search-recipe/:query", errorCatch(searchRecipe));
+
+router.post("/save-recipe/:recipeId", verifyToken, errorCatch(saveRecipe));
+
+router.get("/get-saved-recipes", verifyToken, errorCatch(getSavedRecipes));
 
 export default router;

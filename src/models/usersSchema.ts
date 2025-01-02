@@ -6,6 +6,7 @@ interface UserType extends Document {
   profileImage?: string;
   createdAt: Date;
   updatedAt: Date;
+  savedRecipes: string[];
 }
 
 const usersSchema: Schema<UserType> = new Schema(
@@ -21,6 +22,11 @@ const usersSchema: Schema<UserType> = new Schema(
     },
     profileImage: {
       type: String,
+    },
+    savedRecipes: {
+      type: [String],
+      default: [],
+      ref: "Recipe",
     },
   },
   { timestamps: true }
