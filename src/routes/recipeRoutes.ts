@@ -6,6 +6,7 @@ import { verifyToken } from "../middlewares/verifyToken";
 import { errorCatch } from "../utils/errors/errorCatch";
 import {
   addRecipe,
+  deleteSavedRecipe,
   getAllRecipes,
   getRecipeByCuisine,
   getRecipeById,
@@ -39,5 +40,11 @@ router.get("/search-recipe/:query", errorCatch(searchRecipe));
 router.post("/save-recipe/:recipeId", verifyToken, errorCatch(saveRecipe));
 
 router.get("/get-saved-recipes", verifyToken, errorCatch(getSavedRecipes));
+
+router.delete(
+  "/delete-saved-recipe/:recipeId",
+  verifyToken,
+  errorCatch(deleteSavedRecipe)
+);
 
 export default router;
