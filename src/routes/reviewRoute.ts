@@ -8,6 +8,7 @@ import {
   addReview,
   filterReviewByRating,
   getReviewByRecipe,
+  updateReviewHelpful,
 } from "../controllers/reviewController";
 
 const router = express.Router();
@@ -30,5 +31,7 @@ router.get(
   verifyToken,
   errorCatch(filterReviewByRating)
 );
+
+router.post("/update-helpful", verifyToken, errorCatch(updateReviewHelpful));
 
 export default router;

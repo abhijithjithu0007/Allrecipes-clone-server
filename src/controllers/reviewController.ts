@@ -71,8 +71,6 @@ export const filterReviewByRating = async (
 
   const numericRatings = ratings.map((rating) => Number(rating));
 
-  console.log(numericRatings);
-
   const reviews = await Review.aggregate([
     { $match: { recipe: new mongoose.Types.ObjectId(recipeId as string) } },
     {
@@ -90,4 +88,33 @@ export const filterReviewByRating = async (
   res
     .status(200)
     .json(new StandardResponse("Reviews fetched successfully", reviews));
+};
+
+export const updateReviewHelpful = async (
+  req: CustomRequest,
+  res: Response
+) => {
+  const { reviewId, userId } = req.body;
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    throw new CustomError("Review not found", 404);
+  }
+
+  const userHasHelpfuled = review.helpfulBy.includes(userId);
+  if (userHasHelpfuled) {
+    review.helpfulBy = review.helpfulBy.filter((id) => id !== userId);
+    review.helpful -= 1;
+  } else {
+    review.helpfulBy.push(userId);
+    review.helpful += 1;
+  }
+
+  res.status(200).json(
+    new StandardResponse("Review help updated successfully", {
+      helpful: review.helpful,
+      userHasHelpfuled: !userHasHelpfuled,
+    })
+  );
+
+  await review.save();
 };

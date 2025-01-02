@@ -6,6 +6,7 @@ interface ReviewType extends Document {
   notes?: string;
   rating: number;
   helpful: number;
+  helpfulBy: string[];
   createdAt: Date;
 }
 
@@ -29,10 +30,8 @@ const reviewSchema: Schema<ReviewType> = new Schema(
       type: Number,
       required: true,
     },
-    helpful: {
-      type: Number,
-      default: 0,
-    },
+    helpful: { type: Number, default: 0 },
+    helpfulBy: { type: [String], default: [] },
     createdAt: {
       type: Date,
       default: Date.now,
