@@ -37,10 +37,16 @@ const addReviewSchema = z.object({
   rating: z.number(),
 });
 
+const updateUserProfileSchema = z.object({
+  name: z.string(),
+  profileImage: z.string().optional(),
+});
+
 export {
   loginSchema,
   registerSchema,
   otpSchema,
   addRecipeSchema,
   addReviewSchema,
+  updateUserProfileSchema,
 };
