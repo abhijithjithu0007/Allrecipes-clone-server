@@ -8,6 +8,7 @@ import {
   addRecipe,
   deleteSavedRecipe,
   getAllRecipes,
+  getNutritionOfRecipe,
   getRecipeByCuisine,
   getRecipeById,
   getRecipeByIngredients,
@@ -46,5 +47,7 @@ router.delete(
   verifyToken,
   errorCatch(deleteSavedRecipe)
 );
+
+router.get("/get-recipe-nutrition/:recipeId", errorCatch(getNutritionOfRecipe));
 
 export default router;

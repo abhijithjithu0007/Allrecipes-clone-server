@@ -4,6 +4,7 @@ import { CustomError } from "../utils/errors/customError";
 import Recipe from "../models/recipeSchema";
 import { CustomRequest } from "../types/interface";
 import User from "../models/usersSchema";
+import axios from "axios";
 
 export const addRecipe = async (req: CustomRequest, res: Response) => {
   const {
@@ -182,4 +183,36 @@ export const deleteSavedRecipe = async (req: CustomRequest, res: Response) => {
   await user.save();
 
   res.status(200).json(new StandardResponse("Recipe removed successfully"));
+};
+
+export const getNutritionOfRecipe = async (
+  req: CustomRequest,
+  res: Response
+) => {
+  const { recipeId } = req.params;
+
+  const recipe = await Recipe.findById(recipeId);
+  if (!recipe || !recipe.ingredients || recipe.ingredients.length === 0) {
+    throw new CustomError("Recipe not found or no ingredients found", 404);
+  }
+  const RequestBody = {
+    ingr: recipe.ingredients || "",
+  };
+
+  const response = await axios.post(
+    "https://api.edamam.com/api/nutrition-details",
+    RequestBody,
+    {
+      params: {
+        app_id: process.env.EDAMAM_APP_ID,
+        app_key: process.env.EDAMAM_APP_KEY,
+      },
+    }
+  );
+
+  res
+    .status(200)
+    .json(
+      new StandardResponse("Nutrition fetched successfully", response.data)
+    );
 };
