@@ -23,14 +23,13 @@ export const googleRegister = async (req: Request, res: Response) => {
       expiresIn: "1d",
     }
   );
-
-  res.status(200).json(
-    new StandardResponse("User registered successfully", {
-      id: newUser._id,
-      data: token,
-      email: email,
-    })
-  );
+  res.cookie("user", JSON.stringify({ id: newUser._id, token: token }), {
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60 * 24,
+    secure: true,
+    sameSite: "none",
+  });
+  res.status(200).json(new StandardResponse("User registered successfully"));
 };
 
 export const googleLogin = async (req: Request, res: Response) => {
@@ -50,13 +49,13 @@ export const googleLogin = async (req: Request, res: Response) => {
           expiresIn: "1d",
         }
       );
-      res.status(200).json(
-        new StandardResponse("User logged in successfully", {
-          id: user._id,
-          token: token,
-          email: email,
-        })
-      );
+      res.cookie("user", JSON.stringify({ id: user._id, token: token }), {
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: true,
+        sameSite: "none",
+      });
+      res.status(200).json(new StandardResponse("User logged in successfully"));
     }
   }
 };
