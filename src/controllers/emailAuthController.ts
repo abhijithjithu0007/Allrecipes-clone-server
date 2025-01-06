@@ -93,12 +93,16 @@ export const verifyOtp = async (req: Request, res: Response) => {
         expiresIn: "1d",
       }
     );
-    res.cookie("user", JSON.stringify({ id: newUser._id, token: token }), {
-      httpOnly: false,
-      maxAge: 1000 * 60 * 60 * 24,
-      secure: true,
-      sameSite: "none",
-    });
+    res.cookie(
+      "user",
+      JSON.stringify({ id: newUser._id, authMethod: "email", token: token }),
+      {
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: true,
+        sameSite: "none",
+      }
+    );
     res.status(200).json(new StandardResponse("Email verified successfully"));
   }
 };
@@ -173,12 +177,16 @@ export const verifyOtpForLogin = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY || "", {
       expiresIn: "1d",
     });
-    res.cookie("user", JSON.stringify({ id: user._id, token: token }), {
-      httpOnly: false,
-      maxAge: 1000 * 60 * 60 * 24,
-      secure: true,
-      sameSite: "none",
-    });
+    res.cookie(
+      "user",
+      JSON.stringify({ id: user._id, authMethod: "email", token: token }),
+      {
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: true,
+        sameSite: "none",
+      }
+    );
     res.status(200).json(new StandardResponse("Email verified successfully"));
   }
 };

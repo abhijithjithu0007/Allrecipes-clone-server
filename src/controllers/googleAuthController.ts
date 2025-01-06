@@ -23,12 +23,16 @@ export const googleRegister = async (req: Request, res: Response) => {
       expiresIn: "1d",
     }
   );
-  res.cookie("user", JSON.stringify({ id: newUser._id, token: token }), {
-    httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24,
-    secure: true,
-    sameSite: "none",
-  });
+  res.cookie(
+    "user",
+    JSON.stringify({ id: newUser._id, authMethod: "google", token: token }),
+    {
+      httpOnly: false,
+      maxAge: 1000 * 60 * 60 * 24,
+      secure: true,
+      sameSite: "none",
+    }
+  );
   res.status(200).json(new StandardResponse("User registered successfully"));
 };
 
@@ -49,12 +53,16 @@ export const googleLogin = async (req: Request, res: Response) => {
           expiresIn: "1d",
         }
       );
-      res.cookie("user", JSON.stringify({ id: user._id, token: token }), {
-        httpOnly: false,
-        maxAge: 1000 * 60 * 60 * 24,
-        secure: true,
-        sameSite: "none",
-      });
+      res.cookie(
+        "user",
+        JSON.stringify({ id: user._id, authMethod: "google", token: token }),
+        {
+          httpOnly: false,
+          maxAge: 1000 * 60 * 60 * 24,
+          secure: true,
+          sameSite: "none",
+        }
+      );
       res.status(200).json(new StandardResponse("User logged in successfully"));
     }
   }
