@@ -11,7 +11,7 @@ export function generateOtp() {
 }
 
 export function getOtpEmailTemplate(otp: string) {
-  const templatePath = "/Server-allrecipes/src/template/otpGenerate.html";
+  const templatePath = "/src/template/otpGenerate.html";
   let template = fs.readFileSync(templatePath, "utf-8");
   template = template.replace("{{OTP}}", otp);
   return template;
