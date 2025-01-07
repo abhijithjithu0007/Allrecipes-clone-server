@@ -3,7 +3,7 @@ import { StandardResponse } from "../utils/standardResponse";
 import { CustomError } from "../utils/errors/customError";
 import User from "../models/usersSchema";
 import Otp from "../models/otpSchema";
-import { generateOtp } from "../config/genarateOtp";
+import { generateOtp, getOtpEmailTemplate } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
 import jwt from "jsonwebtoken";
 
@@ -29,7 +29,7 @@ export const sendOtp = async (req: Request, res: Response) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Your OTP Code",
-      text: `Your OTP is ${existingOtpEntry.otp}. It will expire in 5 minutes.`,
+      html: getOtpEmailTemplate(existingOtpEntry.otp),
     });
 
     res.status(200).json(new StandardResponse("OTP sent successfully"));
@@ -48,7 +48,7 @@ export const sendOtp = async (req: Request, res: Response) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Your OTP Code",
-      text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
+      html: getOtpEmailTemplate(otp),
     });
 
     res.status(200).json(new StandardResponse("OTP sent successfully"));
@@ -139,7 +139,7 @@ export const sendOtpForLogin = async (req: Request, res: Response) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Your OTP Code",
-    text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
+    html: getOtpEmailTemplate(otp),
   });
 
   res.status(200).json(new StandardResponse("OTP sent successfully"));
