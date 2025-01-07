@@ -1,5 +1,6 @@
 const otpGenerator = require("otp-generator");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 
 export function generateOtp() {
   return otpGenerator.generate(6, {
@@ -11,7 +12,12 @@ export function generateOtp() {
 }
 
 export function getOtpEmailTemplate(otp: string) {
-  const templatePath = "/src/template/otpGenerate.html";
+  const templatePath = path.resolve(
+    __dirname,
+    "src",
+    "template",
+    "otpGenerate.html"
+  );
   let template = fs.readFileSync(templatePath, "utf-8");
   template = template.replace("{{OTP}}", otp);
   return template;
