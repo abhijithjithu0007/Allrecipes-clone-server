@@ -27,7 +27,7 @@ export const googleRegister = async (req: Request, res: Response) => {
     "user",
     JSON.stringify({ id: newUser._id, authMethod: "google", token: token }),
     {
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
       secure: true,
       sameSite: "none",
@@ -57,7 +57,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         "user",
         JSON.stringify({ id: user._id, authMethod: "google", token: token }),
         {
-          httpOnly: false,
+          httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
           secure: true,
           sameSite: "none",
