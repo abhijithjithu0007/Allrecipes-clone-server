@@ -7,19 +7,18 @@ import authRoute from "./routes/authRoutes";
 import recipeRoute from "./routes/recipeRoutes";
 import reviewRoute from "./routes/reviewRoute";
 import userRoute from "./routes/userRoute";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
 const port = process.env.PORT || 3001;
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 app.use(express.json());
-
-app.get("/", (_req, res) => {
-  res.send("Hello World!");
-});
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
 app.use("/api/recipe", recipeRoute);

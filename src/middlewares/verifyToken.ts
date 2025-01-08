@@ -10,7 +10,10 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header("Authorization")?.split(" ")[1];
+    const userCookie = req.cookies?.user ? JSON.parse(req.cookies.user) : null;
+
+    const token: string = userCookie?.token;
+
     if (!token) {
       throw new CustomError("You are not authenticated ! Please login", 401);
     }
