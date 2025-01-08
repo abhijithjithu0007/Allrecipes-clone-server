@@ -13,8 +13,8 @@ export function generateOtp() {
 
 export function getOtpEmailTemplate(otp: string) {
   const templatePath = path.resolve(
-    __dirname,
-    "src",
+    process.cwd(),
+    "public",
     "template",
     "otpGenerate.html"
   );
