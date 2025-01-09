@@ -6,6 +6,7 @@ import Otp from "../models/otpSchema";
 import { generateOtp, getOtpEmailTemplate } from "../config/genarateOtp";
 import { transporter } from "../config/nodeMailerConfig";
 import jwt from "jsonwebtoken";
+import { CustomRequest } from "../types/interface";
 
 export const sendOtp = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -189,4 +190,9 @@ export const verifyOtpForLogin = async (req: Request, res: Response) => {
     );
     res.status(200).json(new StandardResponse("Email verified successfully"));
   }
+};
+
+export const userLogout = async (req: CustomRequest, res: Response) => {
+  res.clearCookie("user");
+  res.status(200).json(new StandardResponse("Logged out successfully"));
 };

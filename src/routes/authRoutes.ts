@@ -5,6 +5,7 @@ import { registerSchema, otpSchema, loginSchema } from "../utils/zodSchema";
 import {
   sendOtp,
   sendOtpForLogin,
+  userLogout,
   verifyOtp,
   verifyOtpForLogin,
 } from "../controllers/emailAuthController";
@@ -38,5 +39,7 @@ router.post(
 
 //google-login
 router.post("/g-login", validateData(loginSchema), errorCatch(googleLogin));
+
+router.post("/user-logout", errorCatch(userLogout));
 
 export default router;
