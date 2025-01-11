@@ -13,7 +13,7 @@ const usersSchema: Schema<UserType> = new Schema(
   {
     name: {
       type: String,
-      unique: true,
+      default: "",
     },
     email: {
       type: String,
