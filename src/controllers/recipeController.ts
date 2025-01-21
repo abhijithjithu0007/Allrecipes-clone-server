@@ -5,6 +5,7 @@ import Recipe from "../models/recipeSchema";
 import { CustomRequest } from "../types/interface";
 import User from "../models/usersSchema";
 import axios from "axios";
+import { io } from "../index";
 
 export const addRecipe = async (req: CustomRequest, res: Response) => {
   const {
@@ -47,6 +48,12 @@ export const addRecipe = async (req: CustomRequest, res: Response) => {
     createdBy: req.user?.id,
   });
 
+  io.emit("newRecipeNotification", {
+    message: `A new recipe added in ${mealType}: ${title}`,
+    mealType,
+    recipeName: title,
+    timestamp: new Date(),
+  });
   res
     .status(200)
     .json(new StandardResponse("Recipe added successfully", recipe));
