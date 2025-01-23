@@ -49,8 +49,9 @@ export const addRecipe = async (req: CustomRequest, res: Response) => {
   });
 
   io.emit("newRecipeNotification", {
-    message: `A new recipe added in ${mealType}: ${title}`,
+    message: `🍽️ New Recipe Alert! A delicious new recipe for *${mealType}* is here: **${title}**. Don't miss out!✨`,
     mealType,
+    recipeId: recipe._id,
     recipeName: title,
     timestamp: new Date(),
   });
