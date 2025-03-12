@@ -10,11 +10,15 @@ import userRoute from "./routes/userRoute";
 import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
+import startCronJob from "./jobs/cronJob";
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+
+startCronJob();
+
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,

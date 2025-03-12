@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/cookie-parser": "^1.4.8",
+    "@types/node-cron": "^3.0.11",
     "axios": "^1.7.9",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -10,6 +11,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mongoose": "^8.8.4",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "otp-generator": "^4.0.1",
     "socket.io": "^4.8.1",
